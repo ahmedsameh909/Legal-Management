@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_contract_document" model="ir.actions.report">
+        <field name="name">Print Contract Document</field>
+        <field name="model">legal.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">legal_managment.report_contract_document_template</field>
+        <field name="report_file">legal_managment.report_contract_document_template</field>
+        <field name="print_report_name">'Contract - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_legal_contract"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_contract_document_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 class="text-center"><span t-field="doc.title"/></h1>
+                        <p class="text-center"><strong>Ref:</strong> <span t-field="doc.name"/></p>
+                        <hr/>
+                        <p><strong>Client / Partner:</strong> <span t-field="doc.partner_id.name"/></p>
+                        <p><strong>Start Date:</strong> <span t-field="doc.start_date"/> | <strong>End Date:</strong> <span t-field="doc.end_date"/></p>
+                        <p><strong>Value:</strong> <span t-field="doc.contract_amount" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></p>
+                        
+                        <h3 class="mt32">Terms &amp; Conditions</h3>
+                        <div t-field="doc.terms_and_conditions"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

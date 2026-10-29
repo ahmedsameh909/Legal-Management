@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_legal_case" model="ir.sequence">
+            <field name="name">Legal Case Sequence</field>
+            <field name="code">legal.case</field>
+            <field name="prefix">CASE/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_legal_hearing" model="ir.sequence">
+            <field name="name">Legal Hearing Sequence</field>
+            <field name="code">legal.hearing</field>
+            <field name="prefix">HEAR/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_legal_contract" model="ir.sequence">
+            <field name="name">Legal Contract Sequence</field>
+            <field name="code">legal.contract</field>
+            <field name="prefix">CONT/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

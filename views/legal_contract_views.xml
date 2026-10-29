@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_legal_contract_tree" model="ir.ui.view">
+        <field name="name">legal.contract.list</field>
+        <field name="model">legal.contract</field>
+        <field name="arch" type="xml">
+            <list string="Legal Contracts" decoration-info="state == 'draft'" decoration-warning="state == 'in_approval'" decoration-success="state == 'active'" decoration-danger="state == 'expired'" decoration-muted="state in ('terminated','cancelled')">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="partner_id"/>
+                <field name="case_id"/>
+                <field name="contract_type"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="contract_amount"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'in_approval'" decoration-success="state == 'active'" decoration-danger="state == 'expired'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_legal_contract_kanban" model="ir.ui.view">
+        <field name="name">legal.contract.kanban</field>
+        <field name="model">legal.contract</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="partner_id"/>
+                <field name="case_id"/>
+                <field name="contract_type"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="contract_amount"/>
+                <field name="currency_id"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="o_legal_contract_card p-3">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                <strong class="text-truncate"><field name="title"/></strong>
+                                <field name="state" widget="badge"
+                                       decoration-info="state == 'draft'"
+                                       decoration-warning="state == 'in_approval'"
+                                       decoration-success="state == 'active'"
+                                       decoration-danger="state == 'expired'"
+                                       decoration-muted="state in ('terminated', 'cancelled')"/>
+                            </div>
+                            <div class="text-muted mb-1"><field name="name"/> · <field name="contract_type"/></div>
+                            <div class="mb-2"><i class="fa fa-user me-1"/> <field name="partner_id"/></div>
+                            <div class="d-flex justify-content-between align-items-center border-top pt-2">
+                                <span class="text-muted"><field name="start_date"/> – <field name="end_date"/></span>
+                                <strong><field name="contract_amount"/></strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_legal_contract_form" model="ir.ui.view">
+        <field name="name">legal.contract.form</field>
+        <field name="model">legal.contract</field>
+        <field name="arch" type="xml">
+            <form string="Legal Contract">
+                <header>
+                    <button name="action_submit_for_approval" string="Submit for Approval" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_activate" string="Approve &amp; Activate" type="object" class="oe_highlight" invisible="state != 'in_approval'" groups="legal_managment.group_legal_manager"/>
+                    <button name="action_expire" string="Set Expired" type="object" invisible="state != 'active'"/>
+                    <button name="action_terminate" string="Terminate Contract" type="object" invisible="state != 'active'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'in_approval')"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state not in ('cancelled', 'terminated', 'expired')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_approval,active,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="title" placeholder="e.g. Legal Retainer Contract..."/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Parties &amp; Responsibility">
+                            <field name="partner_id"/>
+                            <field name="case_id"/>
+                            <field name="responsible_user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Contract Details &amp; Financials">
+                            <field name="contract_type"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="contract_amount"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="auto_renew"/>
+                            <field name="notice_period_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Terms &amp; Conditions" name="terms">
+                            <field name="terms_and_conditions" placeholder="Write or paste contract clauses here..."/>
+                        </page>
+                        <page string="Internal Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes for lawyers/managers only..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_legal_contract_search" model="ir.ui.view">
+        <field name="name">legal.contract.search</field>
+        <field name="model">legal.contract</field>
+        <field name="arch" type="xml">
+            <search string="Search Contracts">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="partner_id"/>
+                <field name="case_id"/>
+                <field name="responsible_user_id"/>
+                <filter string="My Contracts" name="my_contracts" domain="[('responsible_user_id', '=', uid)]"/>
+                <filter string="Active" name="active_contracts" domain="[('state', '=', 'active')]"/>
+                <filter string="Pending Approval" name="pending_approval" domain="[('state', '=', 'in_approval')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Responsible Lawyer" name="groupby_responsible" context="{'group_by': 'responsible_user_id'}"/>
+                    <filter string="Client" name="groupby_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Status" name="groupby_state" context="{'group_by': 'state'}"/>
+                    <filter string="Contract Type" name="groupby_type" context="{'group_by': 'contract_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_legal_contract" model="ir.actions.act_window">
+        <field name="name">Contracts</field>
+        <field name="res_model">legal.contract</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_legal_contract_search"/>
+        <field name="context">{'search_default_my_contracts': 1}</field>
+    </record>
+
+</odoo>

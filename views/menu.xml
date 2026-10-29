@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="main_legal_management_menu"
+              name="Legal Management"
+              web_icon="legal_managment,static/description/icon.png"
+              sequence="10"/>
+
+    <menuitem id="legal_cases_category_menu"
+              name="Cases &amp; Hearings"
+              parent="main_legal_management_menu"
+              sequence="10"/>
+
+    <menuitem id="legal_case_menu"
+              name="Cases"
+              parent="legal_cases_category_menu"
+              action="action_legal_case"
+              sequence="10"/>
+
+    <menuitem id="legal_hearing_menu"
+              name="Hearings"
+              parent="legal_cases_category_menu"
+              action="action_legal_hearing"
+              sequence="20"/>
+
+    <menuitem id="legal_contracts_category_menu"
+              name="Contracts"
+              parent="main_legal_management_menu"
+              sequence="20"/>
+
+    <menuitem id="legal_contract_menu"
+              name="Contracts"
+              parent="legal_contracts_category_menu"
+              action="action_legal_contract"
+              sequence="10"/>
+
+    <menuitem id="legal_parties_category_menu"
+              name="Contacts"
+              parent="main_legal_management_menu"
+              sequence="30"/>
+
+    <menuitem id="legal_client_partner_menu"
+              name="Clients"
+              parent="legal_parties_category_menu"
+              action="action_legal_client_partner"
+              sequence="10"/>
+
+</odoo>

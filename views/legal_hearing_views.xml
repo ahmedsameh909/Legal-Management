@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_legal_hearing_tree" model="ir.ui.view">
+        <field name="name">legal.hearing.list</field>
+        <field name="model">legal.hearing</field>
+        <field name="arch" type="xml">
+            <list string="Legal Hearings" decoration-info="state == 'scheduled'" decoration-success="state == 'attended'" decoration-warning="state == 'postponed'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="case_id"/>
+                <field name="client_id"/>
+                <field name="lawyer_id" widget="many2one_avatar_user"/>
+                <field name="date"/>
+                <field name="court_name"/>
+                <field name="court_room"/>
+                <field name="state" widget="badge" decoration-info="state == 'scheduled'" decoration-success="state == 'attended'" decoration-warning="state == 'postponed'" decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_legal_hearing_form" model="ir.ui.view">
+        <field name="name">legal.hearing.form</field>
+        <field name="model">legal.hearing</field>
+        <field name="arch" type="xml">
+            <form string="Legal Hearing">
+                <header>
+                    <button name="action_mark_attended" string="Mark Attended" type="object" class="oe_highlight" invisible="state != 'scheduled'"/>
+                    <button name="action_postpone" string="Postpone Hearing" type="object" invisible="state != 'scheduled'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state != 'scheduled'"/>
+                    <button name="action_reset_to_scheduled" string="Reset to Scheduled" type="object" invisible="state not in ('cancelled', 'postponed')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="scheduled,attended,postponed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Hearing &amp; Case Information">
+                            <field name="case_id"/>
+                            <field name="client_id"/>
+                            <field name="lawyer_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group string="Court Details">
+                            <field name="court_name"/>
+                            <field name="court_room"/>
+                            <field name="judge_name"/>
+                            <field name="next_hearing_date" invisible="state != 'postponed'" required="state == 'postponed'"/>
+                        </group>
+                    </group>
+                    <group string="Postponement Reason" invisible="state != 'postponed'">
+                        <field name="postponed_reason" nolabel="1" placeholder="Specify why the hearing was postponed..."/>
+                    </group>
+                    <notebook>
+                        <page string="Summary &amp; Requirements" name="summary">
+                            <field name="summary" placeholder="Write down hearing requirements and summary..."/>
+                        </page>
+                        <page string="Court Decision" name="decision">
+                            <field name="decision" placeholder="Write down the court judgment or decision..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_legal_hearing_calendar" model="ir.ui.view">
+        <field name="name">legal.hearing.calendar</field>
+        <field name="model">legal.hearing</field>
+        <field name="arch" type="xml">
+            <calendar string="Hearings Calendar" date_start="date" color="lawyer_id" hide_time="false">
+                <field name="name"/>
+                <field name="case_id"/>
+                <field name="court_name"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_legal_hearing_search" model="ir.ui.view">
+        <field name="name">legal.hearing.search</field>
+        <field name="model">legal.hearing</field>
+        <field name="arch" type="xml">
+            <search string="Search Hearings">
+                <field name="name"/>
+                <field name="case_id"/>
+                <field name="lawyer_id"/>
+                <field name="court_name"/>
+                <filter string="My Hearings" name="my_hearings" domain="[('lawyer_id', '=', uid)]"/>
+                <filter string="Scheduled" name="scheduled" domain="[('state', '=', 'scheduled')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Lawyer" name="groupby_lawyer" context="{'group_by': 'lawyer_id'}"/>
+                    <filter string="Case" name="groupby_case" context="{'group_by': 'case_id'}"/>
+                    <filter string="Status" name="groupby_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_legal_hearing" model="ir.actions.act_window">
+        <field name="name">Hearings</field>
+        <field name="res_model">legal.hearing</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="search_view_id" ref="view_legal_hearing_search"/>
+        <field name="context">{'search_default_my_hearings': 1, 'search_default_scheduled': 1}</field>
+    </record>
+
+</odoo>
