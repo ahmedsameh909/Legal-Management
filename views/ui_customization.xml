@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UI/UX Enhancements for Legal Management (Odoo 18) -->
+<odoo>
+
+    <!-- 1. Legal Case Kanban View Enhancement -->
+    <record id="view_legal_case_kanban_ui" model="ir.ui.view">
+        <field name="name">legal.case.kanban.ui.customization</field>
+        <field name="model">legal.case</field>
+        <field name="inherit_id" ref="legal_managment.view_legal_case_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="class" add="o_legal_kanban_view" separator=" "/>
+            </xpath>
+            <xpath expr="//t[@t-name='card']/div" position="attributes">
+                <attribute name="class" add="o_smooth_kanban_card" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 2. Legal Case Form View Enhancement -->
+    <record id="view_legal_case_form_ui" model="ir.ui.view">
+        <field name="name">legal.case.form.ui.customization</field>
+        <field name="model">legal.case</field>
+        <field name="inherit_id" ref="legal_managment.view_legal_case_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="class" add="o_legal_form_view" separator=" "/>
+            </xpath>
+            <xpath expr="//sheet/group[1]" position="before">
+                <div class="legal-header-banner d-flex align-items-center gap-3 mb-4">
+                    <div class="legal-banner-icon">
+                        <i class="fa fa-balance-scale fa-2x"/>
+                    </div>
+                    <div>
+                        <h5 class="mb-0 legal-banner-title">Legal Case Management</h5>
+                        <small class="legal-banner-sub">Confidential — Attorney-Client Privilege</small>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 3. Legal Case List View Enhancement -->
+    <record id="view_legal_case_tree_ui" model="ir.ui.view">
+        <field name="name">legal.case.list.ui.customization</field>
+        <field name="model">legal.case</field>
+        <field name="inherit_id" ref="legal_managment.view_legal_case_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class" add="o_legal_list_view" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 4. Legal Contract List View Enhancement -->
+    <record id="view_legal_contract_tree_ui" model="ir.ui.view">
+        <field name="name">legal.contract.list.ui.customization</field>
+        <field name="model">legal.contract</field>
+        <field name="inherit_id" ref="legal_managment.view_legal_contract_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class" add="o_legal_list_view" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 5. Legal Hearing List View Enhancement -->
+    <record id="view_legal_hearing_tree_ui" model="ir.ui.view">
+        <field name="name">legal.hearing.list.ui.customization</field>
+        <field name="model">legal.hearing</field>
+        <field name="inherit_id" ref="legal_managment.view_legal_hearing_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class" add="o_legal_list_view" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

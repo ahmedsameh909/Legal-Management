@@ -3,7 +3,7 @@
 
     <menuitem id="main_legal_management_menu"
               name="Legal Management"
-              web_icon="legal_managment,static/description/icon.png"
+              web_icon="legal_managment,static/description/icon.svg"
               sequence="10"/>
 
     <menuitem id="legal_cases_category_menu"

@@ -1,0 +1,346 @@
+// ==========================================================================
+// Legal Management — Smooth Modern & Prestigious Aesthetic (Odoo 18)
+// Brand: Slate Charcoal (#0F172A) | Amber/Gold (#D97706) | Burgundy (#881337)
+// Surface: Soft Gray (#F8FAFC)
+// ==========================================================================
+
+:root {
+  --legal-primary:          #0F172A;
+  --legal-primary-light:    #1E293B;
+  --legal-gold:             #D97706;
+  --legal-gold-light:       #F59E0B;
+  --legal-burgundy:         #881337;
+  --legal-burgundy-light:   #9F1239;
+  --legal-bg-surface:       #F8FAFC;
+  --legal-bg-subtle:        #F1F5F9;
+  --legal-card-surface:     #FFFFFF;
+  --legal-text-main:        #0F172A;
+  --legal-text-muted:       #64748B;
+  --legal-border-color:     #E2E8F0;
+  --legal-shadow-soft:      0 4px 20px rgba(15, 23, 42, 0.05);
+  --legal-shadow-hover:     0 12px 28px rgba(217, 119, 6, 0.12);
+  --legal-radius:           14px;
+  --legal-radius-pill:      9999px;
+  --legal-transition:       all 0.25s ease-in-out;
+}
+
+// --------------------------------------------------------------------------
+// Micro-Animations
+// --------------------------------------------------------------------------
+@keyframes legalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes legalPulseGold {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.3); opacity: 0.45; }
+}
+
+// --------------------------------------------------------------------------
+// Odoo 18 Kanban Record Reset & Scoping
+// --------------------------------------------------------------------------
+.o_kanban_renderer {
+  .o_kanban_record:has(.o_smooth_kanban_card),
+  .o_kanban_record:has(.o_legal_case_card),
+  .o_kanban_record:has(.o_legal_contract_card) {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 12px !important;
+    overflow: visible !important;
+  }
+}
+
+.o_legal_kanban_view {
+  background-color: var(--legal-bg-surface) !important;
+
+  .o_kanban_group {
+    background: rgba(241, 245, 249, 0.6) !important;
+    border-radius: var(--legal-radius);
+    border: 1px solid var(--legal-border-color);
+    padding: 10px;
+  }
+
+  .o_kanban_header .o_kanban_header_title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--legal-primary) !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Smooth Modern Kanban Cards
+// --------------------------------------------------------------------------
+.o_smooth_kanban_card,
+.o_legal_case_card,
+.o_legal_contract_card {
+  background: var(--legal-card-surface) !important;
+  border-radius: var(--legal-radius) !important;
+  border: 1px solid var(--legal-border-color) !important;
+  border-left: 4px solid var(--legal-gold) !important;
+  box-shadow: var(--legal-shadow-soft) !important;
+  transition: var(--legal-transition) !important;
+  animation: legalFadeIn 0.3s ease-out both;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: var(--legal-shadow-hover) !important;
+    border-left-color: var(--legal-gold-light) !important;
+  }
+
+  strong, b, .h5, .h6 {
+    color: var(--legal-primary) !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .text-muted {
+    color: var(--legal-text-muted) !important;
+  }
+
+  .border-top {
+    border-color: rgba(226, 232, 240, 0.8) !important;
+  }
+
+  .fa {
+    color: var(--legal-gold) !important;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Pastel Badges with Glowing Status Dots
+// --------------------------------------------------------------------------
+.o_status_badge_custom,
+.o_legal_kanban_view .badge,
+.o_legal_form_view .badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 4px 12px !important;
+  border-radius: var(--legal-radius-pill) !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+  border: 1px solid transparent !important;
+  transition: var(--legal-transition) !important;
+
+  // Glowing status indicator dot
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background-color: currentColor;
+    box-shadow: 0 0 6px currentColor;
+  }
+
+  // Won / Settled / Closed (Warm Amber/Gold)
+  &.badge-success,
+  &.text-bg-success,
+  &[class*="won"],
+  &[class*="settled"] {
+    background-color: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #FDE68A !important;
+    &::before {
+      background-color: var(--legal-gold);
+      box-shadow: 0 0 8px var(--legal-gold);
+    }
+  }
+
+  // Lost / Terminated (Burgundy)
+  &.badge-danger,
+  &.text-bg-danger,
+  &[class*="lost"] {
+    background-color: #FFE4E6 !important;
+    color: var(--legal-burgundy) !important;
+    border-color: #FECDD3 !important;
+    &::before {
+      background-color: var(--legal-burgundy-light);
+      box-shadow: 0 0 8px var(--legal-burgundy-light);
+    }
+  }
+
+  // In Progress / Pending / Court
+  &.badge-warning,
+  &.text-bg-warning,
+  &[class*="in_progress"],
+  &[class*="pending"] {
+    background-color: #EFF6FF !important;
+    color: #1E40AF !important;
+    border-color: #BFDBFE !important;
+    &::before {
+      background-color: #2563EB;
+      box-shadow: 0 0 8px #2563EB;
+      animation: legalPulseGold 2s infinite;
+    }
+  }
+
+  // Draft / Open
+  &.badge-info,
+  &.text-bg-info,
+  &.badge-secondary,
+  &.text-bg-secondary,
+  &[class*="draft"] {
+    background-color: #F1F5F9 !important;
+    color: #475569 !important;
+    border-color: #E2E8F0 !important;
+    &::before {
+      background-color: #64748B;
+      box-shadow: 0 0 5px #64748B;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Form View & Floating Header Enhancement
+// --------------------------------------------------------------------------
+.o_legal_form_view,
+.o_form_view.o_legal_form_view {
+  background-color: var(--legal-bg-surface) !important;
+
+  .o_form_sheet_bg {
+    background-color: transparent !important;
+    padding-top: 16px !important;
+  }
+
+  .o_form_sheet {
+    background: #FFFFFF !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--legal-border-color) !important;
+    box-shadow: var(--legal-shadow-soft) !important;
+    padding: 32px !important;
+  }
+
+  // Floating Action Header
+  .o_form_statusbar {
+    background: #FFFFFF !important;
+    border-radius: var(--legal-radius) !important;
+    border: 1px solid var(--legal-border-color) !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04) !important;
+    margin: 0 0 16px 0 !important;
+    padding: 6px 14px !important;
+
+    .o_statusbar_status {
+      .btn-secondary.active,
+      .o_arrow_button.o_arrow_button_current {
+        background: linear-gradient(135deg, var(--legal-primary) 0%, var(--legal-primary-light) 100%) !important;
+        border-color: var(--legal-primary) !important;
+        color: #FFFFFF !important;
+        border-radius: var(--legal-radius-pill) !important;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+      }
+    }
+  }
+
+  // Prestigious Top Banner
+  .legal-header-banner {
+    background: linear-gradient(135deg, var(--legal-primary) 0%, var(--legal-primary-light) 60%, #1e1b4b 100%) !important;
+    border-radius: var(--legal-radius);
+    border-left: 4px solid var(--legal-gold);
+    padding: 16px 20px;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.16);
+
+    .legal-banner-icon {
+      color: var(--legal-gold);
+    }
+    .legal-banner-title {
+      color: #FFFFFF !important;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .legal-banner-sub {
+      color: var(--legal-gold-light) !important;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+
+  // KPI Stat Buttons
+  .oe_button_box .oe_stat_button {
+    background: #F8FAFC !important;
+    border: 1px solid var(--legal-border-color) !important;
+    border-bottom: 3px solid var(--legal-gold) !important;
+    border-radius: 10px !important;
+    transition: var(--legal-transition) !important;
+
+    &:hover {
+      background: #FFFFFF !important;
+      border-bottom-color: var(--legal-gold-light) !important;
+      transform: translateY(-2px);
+      box-shadow: var(--legal-shadow-soft) !important;
+    }
+
+    .o_stat_info .o_stat_value {
+      color: var(--legal-primary) !important;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .o_stat_info .o_stat_text {
+      color: var(--legal-gold) !important;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .o_button_icon {
+      color: var(--legal-gold) !important;
+    }
+  }
+
+  // Custom Chatter Container
+  .o_chatter {
+    background: #FFFFFF !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--legal-border-color) !important;
+    box-shadow: var(--legal-shadow-soft) !important;
+    margin-top: 24px;
+    padding: 20px;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Smooth List View Rows
+// --------------------------------------------------------------------------
+.o_legal_list_view {
+  border-radius: var(--legal-radius);
+  overflow: hidden;
+  border: 1px solid var(--legal-border-color);
+  box-shadow: var(--legal-shadow-soft);
+
+  thead th {
+    background: #F1F5F9 !important;
+    color: var(--legal-primary) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--legal-border-color) !important;
+    padding: 12px 14px !important;
+  }
+
+  tbody tr {
+    transition: var(--legal-transition);
+
+    &:hover td {
+      background-color: #F8FAFC !important;
+    }
+  }
+}

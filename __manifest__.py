@@ -11,7 +11,7 @@
         - Portal access for clients
     """,
     'category': 'Legal',
-    'author': 'Your Name / Firm',
+    'author': 'Ahmed Sameh',
     'depends': [
         'base',
         'mail',
@@ -32,6 +32,8 @@
         'views/legal_hearing_views.xml',
         'views/legal_contract_views.xml',
         'views/res_partner_view.xml',
+        'views/ui_customization.xml',
+        'demo/legal_management_demo.xml',
         'views/menu.xml',
 
         # 4. Reports PDF
@@ -43,7 +45,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'legal_managment/static/src/css/legal_management.css',
+            'legal_managment/static/src/scss/custom_styles.scss',
         ],
     },
     'installable': True,
